@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  *
  * @author: Ahmed hassan, hassan , Mostafa
@@ -7,6 +9,7 @@ abstract class LinkedList {
     protected Node head;
     protected Node tail;
     protected int lastAdded = 0;
+
 
     public abstract void add(int id);
     public abstract void remove(int id);
