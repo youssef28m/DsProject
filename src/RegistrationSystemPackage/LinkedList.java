@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+package RegistrationSystemPackage;
 
 /**
  *
@@ -9,7 +9,6 @@ abstract class LinkedList {
     protected Node head;
     protected Node tail;
     protected int lastAdded = 0;
-
 
     public abstract void add(int id);
     public abstract void remove(int id);
