@@ -19,16 +19,7 @@ public class DataStructuresProject {
             mySystem1.addStudent();
             mySystem1.addCourse();
             
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+
             
             // main method End
         } catch (Exception ex) {
