@@ -8,77 +8,89 @@ class Node {
     private final int id;
     private Node next;
     
-    public Node (int id){
+    Node (int id){
         this.id = id;
         this.next = null;
         
     }
-    public int getId(){
+    int getId(){
         return id;
     }
-    public Node getNext(){
+    Node getNext(){
         return next;
         
     }
-    public void setNext(Node next){
+    void setNext(Node next){
         this.next =next;
     }
-    
-    
+
 }
 
 class StudentNode extends Node {
-    private int coursesCount;
-    private Cell firstcell;
+
+    private StudentNode next;
+
+
+    int coursesCount;
+    Cell firstcell;
+
     
-    public StudentNode(int id){
+    StudentNode(int id){
         super(id);
         this.coursesCount = 0;
         this.firstcell = null;
     }
-    public void printNextNode(){
-        Node nextNode = getNext();
-        if(nextNode != null){
-            System.out.println("next node ID" + nextNode.getId());
-        }
+
+
+    StudentNode getNext(){
+        return next;
     }
-       
-    
-    
+
+    void setNext(StudentNode next){
+        this.next = next;
+    }
+
+    int getCountOfCourses() {
+        return coursesCount;
+    }
+
+    void removeAllCoursesOfMe(){
+        // sparse table TODO
+    }
+
     
 }
 
 
 class CourseNode extends Node {
-    private int studentsCount;
-    private Cell firstCell;
 
-    public CourseNode(int id) {
+    private CourseNode next;
+
+
+    int studentsCount;
+    Cell firstCell;
+
+    CourseNode(int id) {
         super(id);
         this.studentsCount = 0;
         this.firstCell = null;
     }
 
-    // ------------ Getters & Setters ------------
-    public int getStudentsCount() {
+
+    CourseNode getNext(){
+        return next;
+    }
+
+    void setNext(CourseNode next){
+        this.next = next;
+    }
+
+    int getCountOfStudents() {
         return studentsCount;
     }
 
-    public Cell getFirstCell() {
-        return firstCell;
+    void removeAllStudentsOfMe(){
+        // sparse table TODO
     }
-
-    public void setFirstCell(Cell firstCell) {
-        this.firstCell = firstCell;
-    }
-
-    // إضافة طالب للكورس
-//    public void addStudent(StudentNode student) {
-//        Cell newCell = new Cell(student, this);
-//        newCell.setNextStudentForThisCourse(firstCell);
-//        firstCell = newCell;
-//        studentsCount++;
-//    }
-
     
 }
