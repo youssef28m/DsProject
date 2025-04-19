@@ -10,7 +10,7 @@ public class RegistrationSystem {
     private StudentsList studentsList = new StudentsList();
     private CoursesList coursesList = new CoursesList();
     
-    private int minCoursesForStudent;
+    private final int minCoursesForStudent;
     private final int maxCoursesForStudent;
     
     private final int minStudentsForCourse;
@@ -67,7 +67,7 @@ public class RegistrationSystem {
             System.out.println("Course with ID " + id + " not found.");
         }
     }
-    
+
     
     
     public void getLastStudentAdded(){}

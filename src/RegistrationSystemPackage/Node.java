@@ -4,7 +4,7 @@ package RegistrationSystemPackage;
  *
  * @author ahmed
  */
-class  Node {
+class Node {
     private final int id;
     private Node next;
     

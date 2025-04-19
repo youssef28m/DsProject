@@ -5,6 +5,7 @@ package RegistrationSystemPackage;
  * @author: youssef Sherif, Amr, Ahmed sobhy
  */
 public class Cell {
+
     private final int student_ID;
     private final int course_ID;
     private Cell nextStudentForThisCourse;
