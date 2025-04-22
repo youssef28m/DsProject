@@ -11,9 +11,13 @@
 This is a project of
 
 **University:** Alexandria University.
+
 **Faculty:** Computers and data science faculty.
+
 **Year:** 1st year - 2nd Term
+
 **Subject:** Data structure & Algorithms
+
 
 ### Projects requirements
 
