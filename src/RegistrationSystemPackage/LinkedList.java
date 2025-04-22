@@ -1,39 +1,34 @@
 package RegistrationSystemPackage;
-import java.util.ArrayList;
 
 /**
  *
- * @author: Ahmed hassan, hassan , Mostafa
+ * @author: Ahmed Hassan, Hassan, Mostafa
  */
+
 // Generic linked list class for students and courses
 abstract class LinkedList {
     protected Node head;
     protected Node tail;
     int itemsCount;
 
-    protected int lastAddedId = 0;
-    // TODO: we can replace the variable "lastAddedId" with simply returns the
-    // id of the student/course in the tail
-
-
     abstract byte add(int id);
     abstract byte remove(int id);
 
     int getLastAddedId() {
-        return tail.getId();
+        // returns -1 if there is no added student
+
+        return tail != null ? tail.getId() : -1;
     }
 
     int[] getAllTheList() {
-        // I do not know if using ArrayList is allowed
-        // make it fixed size array is better
-        // size of array can be known by "itemsCount" variable for the linked list
-        ArrayList<Integer> ids = new ArrayList<>();
+        int[] ids = new int[itemsCount]; // مصفوفة بحجم ثابت
         Node current = head;
-        while (current != null) {
-            ids.add(current.getId());
+        int i = 0;
+        while (current != null && i < itemsCount) {
+            ids[i++] = current.getId();
             current = current.getNext();
         }
-        return ids.stream().mapToInt(i -> i).toArray();
+        return ids;
     }
 }
 
@@ -48,11 +43,15 @@ class StudentsList extends LinkedList {
         // returns number of type "byte" for status
         // 1 = successfully added
         // 0 = There is item with given id (already added)
+        // -1 = negative id given (invalid id)
 
+        if (id < 0) {
+            return -1;
+        }
 
-        // TODO: we must to check if id is already exist
-        // if exist: return 0;
-        // else: add it and return 1;
+        if (getStudentNodeById(id) != null) {
+            return 0; // الطالب موجود بالفعل
+        }
 
         StudentNode student = new StudentNode(id);
 
@@ -63,9 +62,9 @@ class StudentsList extends LinkedList {
             tail = student;
         }
 
-        lastAddedId = id;
+        itemsCount++;
 
-        return 1; // temporally until edit the method implementation
+        return 1; // تم الإضافة بنجاح
     }
 
     @Override
@@ -73,13 +72,17 @@ class StudentsList extends LinkedList {
         // returns number of type "byte" for status
         // 1 = successfully removed
         // 0 = There is no item with given id to removed
+        // -1 = negative id given (invalid id)
 
+        if (id < 0) {
+            return -1;
+        }
 
-        StudentNode current = head, prev = null;
+        StudentNode current = head;
+        StudentNode prev = null;
 
         while (current != null) {
             if (current.getId() == id) {
-
                 current.removeAllCoursesOfMe(); // remove all enrollments related first
 
                 if (prev == null) head = current.getNext();
@@ -87,17 +90,22 @@ class StudentsList extends LinkedList {
 
                 if (current == tail) tail = prev;
 
-                return 1; // successfully removed
-                //break;
+                itemsCount--;
+                return 1;
             }
 
             prev = current;
             current = current.getNext();
         }
-        return 0; // There is no item with given id to removed
+        return 0;
     }
 
     StudentNode getStudentNodeById(int id) {
+
+        if (id < 0) {
+            return null;
+        }
+
         Node current = head;
         while (current != null) {
             if (current.getId() == id) return (StudentNode) current;
@@ -106,19 +114,6 @@ class StudentsList extends LinkedList {
         return null;
     }
 
-    StudentNode getLastStudentNode() {
-        return tail;
-    }
-
-
-//    // not need it, LinkedList's getAllTheList() is good
-//    void printAllStudents() {
-//        Node current = head;
-//        while (current != null) {
-//            System.out.println("Student ID: " + current.getId());
-//            current = current.getNext();
-//        }
-//    }
 }
 
 // Course list implementation
@@ -127,19 +122,20 @@ class CoursesList extends LinkedList {
     CourseNode head;
     CourseNode tail;
 
-
-
     @Override
     byte add(int id) {
         // returns number of type "byte" for status
         // 1 = successfully added
         // 0 = There is item with given id (already added)
+        // -1 = negative id given (invalid id)
 
+        if (id < 0) {
+            return -1;
+        }
 
-        // TODO: we must to check if id is already exist
-        // if exist: print a warning that id is already exist
-        // else: add it and print that it has added
-
+        if (getCourseNodeById(id) != null) {
+            return 0;
+        }
 
         CourseNode course = new CourseNode(id);
 
@@ -150,9 +146,9 @@ class CoursesList extends LinkedList {
             tail = course;
         }
 
-        lastAddedId = id;
+        itemsCount++;
 
-        return 1; // temporally until edit the method implementation
+        return 1;
     }
 
     @Override
@@ -160,34 +156,40 @@ class CoursesList extends LinkedList {
         // returns number of type "byte" for status
         // 1 = successfully removed
         // 0 = There is no item with given id to removed
+        // -1 = negative id given (invalid id)
 
+        if (id < 0) {
+            return -1;
+        }
 
-
-        CourseNode current = head, prev = null;
+        CourseNode current = head;
+        CourseNode prev = null;
 
         while (current != null) {
             if (current.getId() == id) {
-
                 current.removeAllStudentsOfMe(); // remove all enrollments related first
-
 
                 if (prev == null) head = current.getNext();
                 else prev.setNext(current.getNext());
 
                 if (current == tail) tail = prev;
 
-                return 1; // successfully removed
-                //break;
+                itemsCount--;
+                return 1;
             }
 
             prev = current;
             current = current.getNext();
         }
-        return 0; // There is no item with given id to removed
+        return 0;
     }
 
-
     CourseNode getCourseNodeById(int id) {
+
+        if (id < 0) {
+            return null;
+        }
+
         Node current = head;
         while (current != null) {
             if (current.getId() == id) return (CourseNode) current;
@@ -196,18 +198,4 @@ class CoursesList extends LinkedList {
         return null;
     }
 
-    CourseNode getLastCourseNode() {
-        return tail;
-    }
-
-
-
-//    // not need it, LinkedList's getAllTheList() is good
-//    void printAllCourses() {
-//        Node current = head;
-//        while (current != null) {
-//            System.out.println("Course ID: " + current.getId());
-//            current = current.getNext();
-//        }
-//    }
 }
