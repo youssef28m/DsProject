@@ -19,17 +19,13 @@ public class RegistrationSystem {
 
     public RegistrationSystem(int minCoursesForStudent, int maxCoursesForStudent, int maxStudentsForCourse) throws java.lang.Exception {
         if (minCoursesForStudent < 0 || maxCoursesForStudent < minCoursesForStudent || maxStudentsForCourse < 0){
-            throw Exception("Check Correct min and max arguments values during creating Registration System.");
+            throw new Exception("Check Correct min and max arguments values during creating Registration System.");
         }
         
         this.minCoursesForStudent = minCoursesForStudent;
         this.maxCoursesForStudent = maxCoursesForStudent;
-        // this.minStudentsForCourse = minStudentsForCourse;
+        // this.minStudentsForCourse = minStudentsForCourse; // Not needed in system
         this.maxStudentsForCourse = maxStudentsForCourse;
-    }
-
-    private Exception Exception(String message) {
-        throw new UnsupportedOperationException(message);
     }
 
 
@@ -44,6 +40,8 @@ public class RegistrationSystem {
                 System.out.println("The student with the id " + id + " has added successfully.");
             } else if (status == 0){
                 System.out.println("There is no student with the id " + id + " is already added.");
+            } else if (status == -1){
+                System.out.println("There is no id with negative value.");
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
             }
@@ -59,6 +57,8 @@ public class RegistrationSystem {
                 System.out.println("The course with the id " + id + " has added successfully.");
             } else if (status == 0){
                 System.out.println("There is no course with the id " + id + " is already added.");
+            } else if (status == -1){
+                System.out.println("There is no id with negative value.");
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
             }
@@ -78,6 +78,8 @@ public class RegistrationSystem {
                 System.out.println("The student with the id " + id + " has been removed successfully.");
             } else if (status == 0){
                 System.out.println("There is no student with the id " + id + " to be removed (already not exist).");
+            } else if (status == -1){
+                System.out.println("There is no id with negative value.");
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
             }
@@ -93,6 +95,8 @@ public class RegistrationSystem {
                 System.out.println("The course with the id " + id + " has been removed successfully.");
             } else if (status == 0){
                 System.out.println("There is no course with the id " + id + " to be removed (already not exist).");
+            } else if (status == -1){
+                System.out.println("There is no id with negative value.");
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
             }
@@ -102,16 +106,30 @@ public class RegistrationSystem {
 
     // --- last student / course added ---
     public int getLastStudentAdded(){
+        // returns -1 if there is no any student in the system
+
         return studentsList.getLastAddedId();
     }
     public int getLastCourseAdded(){
+        // returns -1 if there is no any course in the system
+
         return coursesList.getLastAddedId();
     }
     public void displayLastStudentAdded(){
-        System.out.println("The id of last student added to system is: "+getLastStudentAdded());
+        int id = getLastStudentAdded();
+        if (id != -1){
+            System.out.println("The id of last student added to system is: "+id);
+        } else {
+            System.out.println("There is no student in the system currently");
+        }
     }
     public void displayLastCourseAdded(){
-        System.out.println("The id of last course added to system is: "+getLastCourseAdded());
+        int id = getLastCourseAdded();
+        if (id != -1){
+            System.out.println("The id of last course added to system is: "+id);
+        } else {
+            System.out.println("There is no course in the system currently");
+        }
     }
 
     
@@ -130,11 +148,11 @@ public class RegistrationSystem {
         } else if (lst.length == 1) {
             System.out.println("There is an one student in system with id " + lst[0]);
         } else {
-            System.out.println("The list of all students in the system are:");
+            System.out.println("-- The list of all students in the system are: --");
             for (int i = 0; i < lst.length; i++) {
                 System.out.println("Student's id: "+lst[i]);
             }
-            System.out.println("Total of "+lst.length+" students.");
+            System.out.println("-- Total of "+lst.length+" students. --");
         }
     }
     public void displayAllCoursesList(){
@@ -145,11 +163,11 @@ public class RegistrationSystem {
         } else if (lst.length == 1) {
             System.out.println("There is an one course in system with id " + lst[0]);
         } else {
-            System.out.println("The list of all courses in the system are:");
+            System.out.println("-- The list of all courses in the system are: --");
             for (int i = 0; i < lst.length; i++) {
                 System.out.println("Course's id: "+lst[i]);
             }
-            System.out.println("Total of "+lst.length+" courses.");
+            System.out.println("-- Total of "+lst.length+" courses. --");
         }
     }
     
@@ -182,11 +200,11 @@ public class RegistrationSystem {
         } else if (lst.length == 1) {
             System.out.println("There is an one course for this student, course id is: " + lst[0]);
         } else {
-            System.out.println("The list of all courses of this student are:");
+            System.out.println("-- The list of all courses of this student are: --");
             for (int i = 0; i < lst.length; i++) {
                 System.out.println("Course's id: "+lst[i]);
             }
-            System.out.println("Total of "+lst.length+" courses.");
+            System.out.println("-- Total of "+lst.length+" courses. --");
         }
     }
     public void displayStudentsOfCourse(int courseId){
@@ -197,38 +215,60 @@ public class RegistrationSystem {
         } else if (lst.length == 1) {
             System.out.println("There is an one student for this course, student id is: " + lst[0]);
         } else {
-            System.out.println("The list of all students of this course are:");
+            System.out.println("-- The list of all students of this course are: --");
             for (int i = 0; i < lst.length; i++) {
                 System.out.println("Student's id: "+lst[i]);
             }
-            System.out.println("Total of "+lst.length+" students.");
+            System.out.println("-- Total of "+lst.length+" students. --");
         }
     }
 
 
 
     // --- Check min and max values ----
-    public boolean isFullCourse(int courseId){
-        return coursesList.getCourseNodeById(courseId).getCountOfStudents() >= maxStudentsForCourse;
+    public boolean isFullCourse(int courseId) throws Exception {
+        // return .getCountOfStudents() >= maxStudentsForCourse;
+        CourseNode n = coursesList.getCourseNodeById(courseId);
+        if (n == null){
+            throw new Exception("Not found course.");
+        }
+        return n.getCountOfStudents() >= maxStudentsForCourse;
     }
-    public boolean isNormalStudent(int studentId){
-        int count = studentsList.getStudentNodeById(studentId).getCountOfCourses();
+    public boolean isNormalStudent(int studentId) throws Exception {
+        StudentNode n = studentsList.getStudentNodeById(studentId);
+        if (n == null){
+            throw new Exception("Not found student.");
+        }
+        int count = n.getCountOfCourses();
+
         return count >= minCoursesForStudent && count <= maxCoursesForStudent;
     }
     public void displayIsFullCourse(int courseId){
-        if (coursesList.getCourseNodeById(courseId).getCountOfStudents() >= maxStudentsForCourse)
-            System.out.println("The course with ID " + courseId + " is full.");
-        else
-            System.out.println("The course with ID " + courseId + " is not full.");
+        try {
+            boolean b = isFullCourse(courseId);
+            if (b) {
+                System.out.println("The course with ID " + courseId + " is full.");
+            } else {
+                System.out.println("The course with ID " + courseId + " is not full.");
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("There is no found course with this id.");
+        }
     }
     public void displayIsNormalStudent(int studentId){
-        int count = studentsList.getStudentNodeById(studentId).getCountOfCourses();
-        if (!(count >= minCoursesForStudent)) {
-            System.out.println("The student with ID " + studentId + " is not normal student (has less courses).");
-        } else if (!(count <= maxCoursesForStudent)) {
-            System.out.println("The student with ID " + studentId + " is not normal student (has more courses).");
-        } else {
-            System.out.println("The student with id " + studentId + " is normal student.");
+        try {
+            boolean b = isNormalStudent(studentId);
+            if (b) {
+                System.out.println("The student with id " + studentId + " is normal student.");
+            } else {
+                System.out.println("The student with ID " + studentId + " is not normal student.");
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("There is no found student with this id.");
         }
     }
 
