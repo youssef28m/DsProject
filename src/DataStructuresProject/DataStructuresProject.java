@@ -12,7 +12,7 @@ public class DataStructuresProject {
             // main method start
             
             System.out.println("Hello in main method");
-            
+
             // This is the system
             RegistrationSystem mySystem1 = new RegistrationSystem(2,7,30); // 2,7,30 is required in project pdf
 
@@ -34,12 +34,12 @@ public class DataStructuresProject {
             
             
             
-            
+
             
             
             // main method End
-        } catch (Exception ex) {
-            System.out.println("Error was happen: \n"+ex);
+        } catch (Exception e) {
+            System.out.println( e.getMessage() != null ? "Error: "+e.getMessage() : "Error in : "+e );
         }
     }
     
