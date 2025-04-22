@@ -7,7 +7,8 @@ package RegistrationSystemPackage;
 class Node {
     private final int id;
     private Node next;
-    
+    Cell firstcell;
+
     Node (int id){
         this.id = id;
         this.next = null;
@@ -32,7 +33,6 @@ class StudentNode extends Node {
 
 
     int coursesCount;
-    Cell firstcell;
 
     
     StudentNode(int id){
@@ -68,12 +68,11 @@ class CourseNode extends Node {
 
 
     int studentsCount;
-    Cell firstCell;
 
     CourseNode(int id) {
         super(id);
         this.studentsCount = 0;
-        this.firstCell = null;
+        this.firstcell = null;
     }
 
 
