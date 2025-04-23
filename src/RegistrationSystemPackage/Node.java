@@ -54,12 +54,14 @@ class StudentNode extends Node {
         return coursesCount;
     }
 
+    // sparse table Task
     void removeAllCoursesOfMe() {
-// sparse table TODO
         Cell curr = firstCell;
         while (curr != null) {
-            CourseNode course = RegistrationSystemMain.system.coursesList.getCourseNodeById(curr.getCourse_ID());
-// Remove from course's list
+
+            CourseNode course = curr.getCourseNode();
+
+            // Remove from course's list
             Cell prev = null, c = course.firstCell;
             while (c != null) {
                 if (c.getStudent_ID() == getId()) {
@@ -73,12 +75,11 @@ class StudentNode extends Node {
             }
             curr = curr.get_next_course();
         }
-// Clear student's list
+
+        // Clear student's list
         firstCell = null;
         coursesCount = 0;
     }
-
-
 
 }
 
@@ -109,13 +110,14 @@ class CourseNode extends Node {
         return studentsCount;
     }
 
+    // sparse table Task
     void removeAllStudentsOfMe() {
-// sparse table TODO
         Cell curr = firstCell;
         while (curr != null) {
-            StudentNode student =
-                    RegistrationSystemMain.system.studentsList.getStudentNodeById(curr.getStudent_ID());
-// Remove from student's list
+
+            StudentNode student = curr.getStudentNode();
+
+            // Remove from student's list
             Cell prev = null, s = student.firstCell;
             while (s != null) {
                 if (s.getCourse_ID() == getId()) {
@@ -129,7 +131,8 @@ class CourseNode extends Node {
             }
             curr = curr.get_next_student();
         }
-// Clear course list
+
+        // Clear course list
         firstCell = null;
         studentsCount = 0;
     }

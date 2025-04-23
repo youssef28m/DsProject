@@ -172,58 +172,131 @@ public class RegistrationSystem {
     }
 
 
-    public void addStudentToCourse(int studentId, int courseId){
-        // sparse table TODO
-        // Remember to check maxCoursesForStudent, maxStudentsForCourse before
-        // Remember to increase StudentNode's coursesCount and StudentNode's coursesCount
-        StudentNode student = studentsList.getStudentNodeById(studentId);
-        CourseNode course = coursesList.getCourseNodeById(courseId);
-        if (student == null || course == null) return;
-        // Create the link (Cell)
-        Cell cell = new Cell(studentId, courseId);
-        // Add to student's list
-        cell.set_next_course(student.firstCell);
-        student.firstCell = cell;
-        student.coursesCount++;
-        // Add to course's list
-        cell.set_next_student(course.firstCell);
-        course.firstCell = cell;
-        course.studentsCount++;
+    // sparse table Task
+    public byte addStudentToCourse(int studentId, int courseId) {
+        return addStudentToCourse(studentId, courseId, true);
     }
-    public void removeStudentFromCourse(int studentId, int courseId) {
-// sparse table TODO
-// Remember to decrease StudentNode's coursesCount and StudentNode's coursesCount
-        StudentNode student = studentsList.getStudentNodeById(studentId);
-        CourseNode course = coursesList.getCourseNodeById(courseId);
-        if (student == null || course == null) return;
-// Remove from student's list
-        Cell prev = null, curr = student.firstCell;
+    public byte addStudentToCourse(int studentId, int courseId, boolean print) {
+        // Add enrollment method
+
+        // returns number of type "byte" for status
+        // 1 = has added successfully
+        // -1 = there is no student with this id
+        // -2 = there is no course with this id
+        // -3 = this student has the max number of courses
+        // -4 = this course has the max number of students
+
+
+        StudentNode studentNode = studentsList.getStudentNodeById(studentId);
+        CourseNode courseNode = coursesList.getCourseNodeById(courseId);
+
+        // Check exist of student and course in system
+        if (studentNode == null) {
+            if (print) System.out.println("Cannot add the student to course, The student with id " + studentId + " does not exist in system.");
+            return -1;
+        }
+        if (courseNode == null) {
+            if (print) System.out.println("Cannot add the student to course, The course with id " + courseId + " does not exist in system.");
+            return -2;
+        }
+
+
+        // Check capacity of student and course
+        if (isFullStudent(studentNode)) {
+            if (print) System.out.println("Cannot add the student to course, The student has the max number of courses.");
+            return -3;
+        }
+        if (isFullCourse(courseNode)) {
+            if (print) System.out.println("Cannot add the student to course, The course has the max number of students.");
+            return -4;
+        }
+
+
+        // Create the enrollment node (Cell)
+        Cell cell = new Cell(studentNode, courseNode);
+
+        // Add to student's list
+        cell.set_next_course(studentNode.firstCell);
+        studentNode.firstCell = cell;
+        studentNode.coursesCount++;
+
+        // Add to course's list
+        cell.set_next_student(courseNode.firstCell);
+        courseNode.firstCell = cell;
+        courseNode.studentsCount++;
+
+        if (print) System.out.println("The student with id " + studentId + " has been added to the course with id "+courseId+" successfully.");
+        return 1;
+    }
+    public byte removeStudentFromCourse(int studentId, int courseId) {
+        return removeStudentFromCourse(studentId, courseId, true);
+    }
+    public byte removeStudentFromCourse(int studentId, int courseId, boolean print) {
+        // remove enrollment method
+
+        // returns number of type "byte" for status
+        // 1 = has removed successfully
+        // 0 = there is no enrollment with this student and this course
+        // -1 = there is no student with this id
+        // -2 = there is no course with this id
+
+        // Remember to decrease StudentNode's coursesCount and StudentNode's coursesCount
+
+        StudentNode studentNode = studentsList.getStudentNodeById(studentId);
+        CourseNode courseNode = coursesList.getCourseNodeById(courseId);
+
+
+        // Check exist of student and course in system
+        if (studentNode == null) {
+            if (print) System.out.println("Cannot remove the student from course, The student with id " + studentId + " does not exist in system.");
+            return -1;
+        }
+        if (courseNode == null) {
+            if (print) System.out.println("Cannot remove the student from course, The course with id " + courseId + " does not exist in system.");
+            return -2;
+        }
+
+        // TODO: improve remove by use cell's prev pointers instead of two seperated loops
+
+        // Remove from student's list
+        Cell prev = null, curr = studentNode.firstCell;
+        boolean found = false;
         while (curr != null) {
             if (curr.getCourse_ID() == courseId) {
-                if (prev == null) student.firstCell = curr.get_next_course();
+                if (prev == null) studentNode.firstCell = curr.get_next_course();
                 else prev.set_next_course(curr.get_next_course());
-                student.coursesCount--;
+                studentNode.coursesCount--;
+                found = true;
                 break;
             }
             prev = curr;
             curr = curr.get_next_course();
         }
-// Remove from course's list
+        if (!found) {
+            if (print) System.out.println("There is no enrollment for this student and this course in the system.");
+            return 0;
+        }
+
+        // Remove from course's list
         prev = null;
-        curr = course.firstCell;
+        curr = courseNode.firstCell;
         while (curr != null) {
             if (curr.getStudent_ID() == studentId) {
-                if (prev == null) course.firstCell = curr.get_next_student();
+                if (prev == null) courseNode.firstCell = curr.get_next_student();
                 else prev.set_next_student(curr.get_next_student());
-                course.studentsCount--;
+                courseNode.studentsCount--;
                 break;
             }
             prev = curr;
             curr = curr.get_next_student();
         }
+
+        if (print) System.out.println("The student with id " + studentId + " has been removed from the course with id "+courseId+" successfully.");
+        return 1;
     }
 
-    
+
+
     public int[] getCoursesOfStudent(int studentId){
         // sparse table TODO
         return new int[0]; // temporally until write code to ignore error
@@ -311,6 +384,23 @@ public class RegistrationSystem {
             System.out.println("There is no found student with this id.");
         }
     }
+
+
+
+
+    private boolean isFullStudent(StudentNode studentNode) {
+        // made this method to use in addStudentToList() to check
+
+        return studentNode.getCountOfCourses() >= maxCoursesForStudent;
+    }
+    private boolean isFullCourse(CourseNode courseNode) {
+        // made this method to use in addStudentToList() to check
+
+        return courseNode.getCountOfStudents() >= maxStudentsForCourse;
+    }
+
+
+
 
 
     // --- history ----

@@ -6,27 +6,32 @@ package RegistrationSystemPackage;
  */
 class Cell {
 
-    private final int student_ID;
-    private final int course_ID;
+    private final StudentNode studentNode;
+    private final CourseNode courseNode;
 
-    // need "prev" for easy remove enrollments
-    // in my opinion: not need setters and getters for those variables
     private Cell nextStudentForThisCourse;
     private Cell nextCourseForThisStudent;
     private Cell prevStudentForThisCourse;
     private Cell prevCourseForThisStudent;
 
-    Cell(int student_ID,int course_ID){
-        this.student_ID = student_ID;
-        this.course_ID = course_ID;
+    Cell(StudentNode studentNode, CourseNode courseNode) {
+        this.studentNode = studentNode;
+        this.courseNode = courseNode;
+    }
+
+    StudentNode getStudentNode() {
+        return studentNode;
+    }
+    CourseNode getCourseNode() {
+        return courseNode;
     }
 
     int getStudent_ID(){
-        return student_ID;
+        return studentNode.getId();
     }
 
     int getCourse_ID(){
-        return course_ID;
+        return courseNode.getId();
     }
 
     void set_next_student(Cell c1){
@@ -38,12 +43,12 @@ class Cell {
     }
 
     Cell get_next_student(){
-        //if you got null so there is no next cell or enrollment;
+        // if you got null so there is no next cell or enrollment
         return nextStudentForThisCourse;
     }
 
     Cell get_next_course(){
-        //if you got null so there is no next cell or enrollment;
+        // if you got null so there is no next cell or enrollment
         return nextCourseForThisStudent;
     }
 }
