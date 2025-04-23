@@ -170,18 +170,58 @@ public class RegistrationSystem {
             System.out.println("-- Total of "+lst.length+" courses. --");
         }
     }
-    
-    
+
+
     public void addStudentToCourse(int studentId, int courseId){
         // sparse table TODO
         // Remember to check maxCoursesForStudent, maxStudentsForCourse before
         // Remember to increase StudentNode's coursesCount and StudentNode's coursesCount
+        StudentNode student = studentsList.getStudentNodeById(studentId);
+        CourseNode course = coursesList.getCourseNodeById(courseId);
+        if (student == null || course == null) return;
+        // Create the link (Cell)
+        Cell cell = new Cell(studentId, courseId);
+        // Add to student's list
+        cell.set_next_course(student.firstCell);
+        student.firstCell = cell;
+        student.coursesCount++;
+        // Add to course's list
+        cell.set_next_student(course.firstCell);
+        course.firstCell = cell;
+        course.studentsCount++;
     }
-    public void removeStudentFromCourse(int studentId, int courseId){
-        // sparse table TODO
-        // Remember to decrease StudentNode's coursesCount and StudentNode's coursesCount
+    public void removeStudentFromCourse(int studentId, int courseId) {
+// sparse table TODO
+// Remember to decrease StudentNode's coursesCount and StudentNode's coursesCount
+        StudentNode student = studentsList.getStudentNodeById(studentId);
+        CourseNode course = coursesList.getCourseNodeById(courseId);
+        if (student == null || course == null) return;
+// Remove from student's list
+        Cell prev = null, curr = student.firstCell;
+        while (curr != null) {
+            if (curr.getCourse_ID() == courseId) {
+                if (prev == null) student.firstCell = curr.get_next_course();
+                else prev.set_next_course(curr.get_next_course());
+                student.coursesCount--;
+                break;
+            }
+            prev = curr;
+            curr = curr.get_next_course();
+        }
+// Remove from course's list
+        prev = null;
+        curr = course.firstCell;
+        while (curr != null) {
+            if (curr.getStudent_ID() == studentId) {
+                if (prev == null) course.firstCell = curr.get_next_student();
+                else prev.set_next_student(curr.get_next_student());
+                course.studentsCount--;
+                break;
+            }
+            prev = curr;
+            curr = curr.get_next_student();
+        }
     }
-
 
     
     public int[] getCoursesOfStudent(int studentId){
