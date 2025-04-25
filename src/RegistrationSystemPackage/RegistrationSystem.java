@@ -10,7 +10,7 @@ public class RegistrationSystem {
     private final StudentsList studentsList = new StudentsList();
     private final CoursesList coursesList = new CoursesList();
 
-    private final History history = new History();
+    private final History history = new History(this);
 
     private final int minCoursesForStudent;
     private final int maxCoursesForStudent;
@@ -174,9 +174,9 @@ public class RegistrationSystem {
 
     // sparse table Task
     public byte addStudentToCourse(int studentId, int courseId) {
-        return addStudentToCourse(studentId, courseId, true);
+        return addStudentToCourse(studentId, courseId, true, true);
     }
-    public byte addStudentToCourse(int studentId, int courseId, boolean print) {
+    public byte addStudentToCourse(int studentId, int courseId, boolean print, boolean h) {
         // Add enrollment method
 
         // returns number of type "byte" for status
@@ -185,7 +185,9 @@ public class RegistrationSystem {
         // -2 = there is no course with this id
         // -3 = this student has the max number of courses
         // -4 = this course has the max number of students
-
+        if (h) {
+            history.addActionToHistory("addStudentToCourse " + studentId + " " + courseId + " " + print);
+        }
 
         StudentNode studentNode = studentsList.getStudentNodeById(studentId);
         CourseNode courseNode = coursesList.getCourseNodeById(courseId);
@@ -229,9 +231,9 @@ public class RegistrationSystem {
         return 1;
     }
     public byte removeStudentFromCourse(int studentId, int courseId) {
-        return removeStudentFromCourse(studentId, courseId, true);
+        return removeStudentFromCourse(studentId, courseId, true, true);
     }
-    public byte removeStudentFromCourse(int studentId, int courseId, boolean print) {
+    public byte removeStudentFromCourse(int studentId, int courseId, boolean print, boolean h) {
         // remove enrollment method
 
         // returns number of type "byte" for status
@@ -241,6 +243,9 @@ public class RegistrationSystem {
         // -2 = there is no course with this id
 
         // Remember to decrease StudentNode's coursesCount and StudentNode's coursesCount
+        if (h) {
+            history.addActionToHistory("removeStudentToCourse " + studentId + " " + courseId + " " + print);
+        }
 
         StudentNode studentNode = studentsList.getStudentNodeById(studentId);
         CourseNode courseNode = coursesList.getCourseNodeById(courseId);
