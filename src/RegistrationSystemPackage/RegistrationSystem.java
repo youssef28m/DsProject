@@ -39,9 +39,9 @@ public class RegistrationSystem {
             if (status == 1){
                 System.out.println("The student with the id " + id + " has added successfully.");
             } else if (status == 0){
-                System.out.println("There is no student with the id " + id + " is already added.");
+                System.out.println("The student with the id " + id + " is already added.");
             } else if (status == -1){
-                System.out.println("There is no id with negative value.");
+                System.out.println("Can't add id with negative value.");
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
             }
@@ -56,9 +56,9 @@ public class RegistrationSystem {
             if (status == 1){
                 System.out.println("The course with the id " + id + " has added successfully.");
             } else if (status == 0){
-                System.out.println("There is no course with the id " + id + " is already added.");
+                System.out.println("The course with the id " + id + " is already added.");
             } else if (status == -1){
-                System.out.println("There is no id with negative value.");
+                System.out.println("Can't add id with negative value.");
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
             }
@@ -201,7 +201,15 @@ public class RegistrationSystem {
             if (print) System.out.println("Cannot add the student to course, The course with id " + courseId + " does not exist in system.");
             return -2;
         }
-
+        for (Cell c = studentNode.firstCell; c != null; c = c.get_next_course()) {
+            if (c.getCourse_ID() == courseId) {
+                if (print) {
+                    System.out.println("Cannot enroll: Student " 
+                        + studentId + " is already in course " + courseId);
+                }
+                return -5;   // duplicate to check enrollment
+            }
+        }
 
         // Check capacity of student and course
         if (isFullStudent(studentNode)) {
@@ -303,12 +311,32 @@ public class RegistrationSystem {
 
 
     public int[] getCoursesOfStudent(int studentId){
-        // sparse table TODO
-        return new int[0]; // temporally until write code to ignore error
+        StudentNode sn = studentsList.getStudentNodeById(studentId);
+    if (sn == null) return new int[0];
+
+    int count = sn.getCountOfCourses();
+    int[] courses = new int[count];
+    Cell curr = sn.firstCell; 
+    int i = 0;
+    while (curr != null) {
+        courses[i++] = curr.getCourse_ID();
+        curr = curr.get_next_course();
     }
+    return courses;
+}
     public int[] getStudentsOfCourse(int courseId){
-        // sparse table TODO
-        return new int[0]; // temporally until write code to ignore error
+        CourseNode cn = coursesList.getCourseNodeById(courseId);
+        if (cn == null) return new int[0];
+    
+        int count = cn.getCountOfStudents();
+        int[] students = new int[count];
+        Cell curr = cn.firstCell;
+        int i = 0;
+        while (curr != null) {
+            students[i++] = curr.getStudent_ID();
+            curr = curr.get_next_student();
+        }
+        return students;
     }
     public void displayCoursesOfStudent(int studentId){
         int[] lst = getCoursesOfStudent(studentId);
