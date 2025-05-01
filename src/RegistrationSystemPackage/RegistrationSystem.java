@@ -178,7 +178,7 @@ public class RegistrationSystem {
     public byte addStudentToCourse(int studentId, int courseId) {
         return addStudentToCourse(studentId, courseId, true, true);
     }
-    public byte addStudentToCourse(int studentId, int courseId, boolean print, boolean h) {
+    public byte addStudentToCourse(int studentId, int courseId, boolean print, boolean addToHistory) {
         // Add enrollment method
 
         // returns number of type "byte" for status
@@ -187,9 +187,6 @@ public class RegistrationSystem {
         // -2 = there is no course with this id
         // -3 = this student has the max number of courses
         // -4 = this course has the max number of students
-        if (h) {
-            history.addActionToHistory("addStudentToCourse " + studentId + " " + courseId + " " + print);
-        }
 
         StudentNode studentNode = studentsList.getStudentNodeById(studentId);
         CourseNode courseNode = coursesList.getCourseNodeById(courseId);
@@ -237,25 +234,24 @@ public class RegistrationSystem {
         courseNode.firstCell = cell;
         courseNode.studentsCount++;
 
+        if (addToHistory) {
+            history.addActionToHistory("addStudentToCourse " + studentId + " " + courseId + " " + print);
+        }
         if (print) System.out.println("The student with id " + studentId + " has been added to the course with id "+courseId+" successfully.");
         return 1;
     }
     public byte removeStudentFromCourse(int studentId, int courseId) {
         return removeStudentFromCourse(studentId, courseId, true, true);
     }
-    public byte removeStudentFromCourse(int studentId, int courseId, boolean print, boolean h) {
+    public byte removeStudentFromCourse(int studentId, int courseId, boolean print, boolean addToHistory) {
         // remove enrollment method
 
         // returns number of type "byte" for status
         // 1 = has removed successfully
-        // 0 = there is no enrollment with this student and this course
+        // 0 = there is no enrollment for this student and this course
         // -1 = there is no student with this id
         // -2 = there is no course with this id
 
-        // Remember to decrease StudentNode's coursesCount and StudentNode's coursesCount
-        if (h) {
-            history.addActionToHistory("removeStudentToCourse " + studentId + " " + courseId + " " + print);
-        }
 
         StudentNode studentNode = studentsList.getStudentNodeById(studentId);
         CourseNode courseNode = coursesList.getCourseNodeById(courseId);
@@ -306,6 +302,9 @@ public class RegistrationSystem {
             curr = curr.get_next_student();
         }
 
+        if (addToHistory) {
+            history.addActionToHistory("removeStudentFromCourse " + studentId + " " + courseId + " " + print);
+        }
         if (print) System.out.println("The student with id " + studentId + " has been removed from the course with id "+courseId+" successfully.");
         return 1;
     }
