@@ -6,6 +6,7 @@ public class Interface {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             RegistrationSystem system = new RegistrationSystem(2, 7, 30);
+            startWithInitData(system);
             boolean running = true;
 
             while (running) {
@@ -141,10 +142,60 @@ public class Interface {
         while (true) {
             String input = scanner.nextLine().trim();
             try {
-                return Integer.parseInt(input);
+                int value = Integer.parseInt(input);
+                System.out.println(); // print empty line
+                return value;
             } catch (NumberFormatException e) {
                 System.out.print("Invalid number. Enter again: ");
             }
         }
+    }
+
+    private static void startWithInitData(RegistrationSystem system) {
+        // Add some data to system to remain in system
+
+        system.addStudent(101,false);
+        system.addStudent(102,false);
+        system.addStudent(103,false);
+        system.addStudent(104,false);
+        system.addStudent(105,false);
+        system.addStudent(106,false);
+        system.addStudent(107,false);
+        system.addStudent(108,false);
+        system.addStudent(109,false);
+        system.addStudent(110,false);
+
+        system.addCourse(31,false);
+        system.addCourse(32,false);
+        system.addCourse(33,false);
+        system.addCourse(34,false);
+        system.addCourse(35,false);
+        system.addCourse(36,false);
+        system.addCourse(37,false);
+        system.addCourse(38,false);
+        system.addCourse(39,false);
+        system.addCourse(40,false);
+
+        system.addStudentToCourse(101, 39,false,true);
+        system.addStudentToCourse(101, 32,false,true);
+        system.addStudentToCourse(101, 33,false,true);
+        system.addStudentToCourse(101, 34,false,true);
+        system.addStudentToCourse(101, 31,false,true);
+
+        system.addStudentToCourse(102, 34,false,true);
+        system.addStudentToCourse(102, 32,false,true);
+        system.addStudentToCourse(102, 33,false,true);
+        system.addStudentToCourse(102, 31,false,true);
+        system.addStudentToCourse(102, 39,false,true);
+
+        system.addStudentToCourse(103, 34,false,true);
+        system.addStudentToCourse(103, 40,false,true);
+        system.addStudentToCourse(103, 37,false,true);
+        system.addStudentToCourse(103, 32,false,true);
+        system.addStudentToCourse(103, 31,false,true);
+
+        system.addStudentToCourse(104, 39,false,true);
+        system.addStudentToCourse(104, 34,false,true);
+        system.addStudentToCourse(104, 32,false,true);
     }
 }

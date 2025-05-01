@@ -38,7 +38,7 @@ class History {
 
             if (actionList.get(0).equals("addStudentToCourse")) {
 
-
+                System.out.println();
                 while (true) {
                     byte status = regSystem.removeStudentFromCourse(studentId, courseId, print, false);
 
@@ -57,12 +57,15 @@ class History {
                         break;
                     }
                 }
+                System.out.println();
+
 
 
 
 
             } else if (actionList.get(0).equals("removeStudentFromCourse")) {
 
+                System.out.println();
                 while (true) {
                     byte status = regSystem.addStudentToCourse(studentId, courseId, print, false);
 
@@ -81,6 +84,7 @@ class History {
                         break;
                     }
                 }
+                System.out.println();
 
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
@@ -108,6 +112,8 @@ class History {
             print = Boolean.parseBoolean(actionList.get(3));
 
             if (actionList.get(0).equals("addStudentToCourse")) {
+
+                System.out.println();
                 while (true) {
                     byte status = regSystem.addStudentToCourse(studentId, courseId, print, false);
 
@@ -126,10 +132,12 @@ class History {
                         break;
                     }
                 }
+                System.out.println();
+
 
             } else if (actionList.get(0).equals("removeStudentFromCourse")) {
 
-
+                System.out.println();
                 while (true) {
                     byte status = regSystem.removeStudentFromCourse(studentId, courseId, print, false);
 
@@ -148,6 +156,8 @@ class History {
                         break;
                     }
                 }
+                System.out.println();
+
 
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
