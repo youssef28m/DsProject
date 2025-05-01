@@ -296,24 +296,69 @@ public class RegistrationSystem {
     }
 
 
-
     public int[] getCoursesOfStudent(int studentId){
-        // sparse table TODO
-        return new int[0]; // temporally until write code to ignore error
+        // returns:
+        //      if not exist the student : null
+        //      if there is no courses : empty array
+        //      no problem : normal array
+
+        StudentNode studentNode = studentsList.getStudentNodeById(studentId);
+        if (studentNode == null) {
+            return null;
+        }
+
+        Cell current = studentNode.firstCell;
+        if (current == null) {
+            return new int[0]; // returns empty array
+        }
+
+        int[] arr = new int[studentNode.coursesCount];
+        int counter = 0;
+        while (current != null) {
+            arr[counter] = current.getCourse_ID();
+            counter++;
+            current = current.get_next_course();
+        }
+        return arr;
     }
     public int[] getStudentsOfCourse(int courseId){
-        // sparse table TODO
-        return new int[0]; // temporally until write code to ignore error
+        // returns:
+        //      if not exist the student : null
+        //      if there is no courses : empty array
+        //      no problem : normal array
+
+        CourseNode courseNode = coursesList.getCourseNodeById(courseId);
+
+        if (courseNode == null) {
+            return null;
+        }
+
+        Cell current = courseNode.firstCell;
+        if (current == null) {
+            return new int[0];
+        }
+
+        int[] arr = new int[courseNode.studentsCount];
+        int counter = 0;
+        while (current != null) {
+            arr[counter] = current.getStudent_ID();
+            counter++;
+            current = current.get_next_student();
+        }
+
+        return arr;
     }
     public void displayCoursesOfStudent(int studentId){
         int[] lst = getCoursesOfStudent(studentId);
 
-        if (lst.length == 0) {
-            System.out.println("There is no courses for this student.");
+        if (lst == null) {
+            System.out.println("Student with id "+studentId+" not found.");
+        } else if (lst.length == 0) {
+            System.out.println("There is no courses for this student with id "+studentId);
         } else if (lst.length == 1) {
-            System.out.println("There is an one course for this student, course id is: " + lst[0]);
+            System.out.println("There is an one course for this student with id "+studentId+", course id is: " + lst[0]);
         } else {
-            System.out.println("-- The list of all courses of this student are: --");
+            System.out.println("-- The list of all courses of this student with id "+studentId+" are: --");
             for (int i = 0; i < lst.length; i++) {
                 System.out.println("Course's id: "+lst[i]);
             }
@@ -323,12 +368,14 @@ public class RegistrationSystem {
     public void displayStudentsOfCourse(int courseId){
         int[] lst = getStudentsOfCourse(courseId);
 
-        if (lst.length == 0) {
-            System.out.println("There is no students for this course.");
+        if (lst == null) {
+            System.out.println("Course with id "+courseId+"  not found.");
+        } else if (lst.length == 0) {
+            System.out.println("There is no students for this course with id "+courseId);
         } else if (lst.length == 1) {
-            System.out.println("There is an one student for this course, student id is: " + lst[0]);
+            System.out.println("There is an one student for this course with id "+courseId+", student id is: " + lst[0]);
         } else {
-            System.out.println("-- The list of all students of this course are: --");
+            System.out.println("-- The list of all students of this course with id "+courseId+" are: --");
             for (int i = 0; i < lst.length; i++) {
                 System.out.println("Student's id: "+lst[i]);
             }
