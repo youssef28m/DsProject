@@ -10,7 +10,7 @@ public class RegistrationSystem {
     private final StudentsList studentsList = new StudentsList();
     private final CoursesList coursesList = new CoursesList();
 
-    private final History history = new History();
+    private final History history = new History(this);
 
     private final int minCoursesForStudent;
     private final int maxCoursesForStudent;
@@ -39,9 +39,9 @@ public class RegistrationSystem {
             if (status == 1){
                 System.out.println("The student with the id " + id + " has added successfully.");
             } else if (status == 0){
-                System.out.println("There is no student with the id " + id + " is already added.");
+                System.out.println("The student with the id " + id + " is already added.");
             } else if (status == -1){
-                System.out.println("There is no id with negative value.");
+                System.out.println("Can't add id with negative value.");
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
             }
@@ -56,9 +56,9 @@ public class RegistrationSystem {
             if (status == 1){
                 System.out.println("The course with the id " + id + " has added successfully.");
             } else if (status == 0){
-                System.out.println("There is no course with the id " + id + " is already added.");
+                System.out.println("The course with the id " + id + " is already added.");
             } else if (status == -1){
-                System.out.println("There is no id with negative value.");
+                System.out.println("Can't add id with negative value.");
             } else {
                 System.out.println("Code Error"); // Must not happen never during code testing
             }
@@ -174,9 +174,9 @@ public class RegistrationSystem {
 
     // sparse table Task
     public byte addStudentToCourse(int studentId, int courseId) {
-        return addStudentToCourse(studentId, courseId, true);
+        return addStudentToCourse(studentId, courseId, true, true);
     }
-    public byte addStudentToCourse(int studentId, int courseId, boolean print) {
+    public byte addStudentToCourse(int studentId, int courseId, boolean print, boolean h) {
         // Add enrollment method
 
         // returns number of type "byte" for status
@@ -185,7 +185,9 @@ public class RegistrationSystem {
         // -2 = there is no course with this id
         // -3 = this student has the max number of courses
         // -4 = this course has the max number of students
-
+        if (h) {
+            history.addActionToHistory("addStudentToCourse " + studentId + " " + courseId + " " + print);
+        }
 
         StudentNode studentNode = studentsList.getStudentNodeById(studentId);
         CourseNode courseNode = coursesList.getCourseNodeById(courseId);
@@ -199,7 +201,15 @@ public class RegistrationSystem {
             if (print) System.out.println("Cannot add the student to course, The course with id " + courseId + " does not exist in system.");
             return -2;
         }
-
+        for (Cell c = studentNode.firstCell; c != null; c = c.get_next_course()) {
+            if (c.getCourse_ID() == courseId) {
+                if (print) {
+                    System.out.println("Cannot enroll: Student " 
+                        + studentId + " is already in course " + courseId);
+                }
+                return -5;   // duplicate to check enrollment
+            }
+        }
 
         // Check capacity of student and course
         if (isFullStudent(studentNode)) {
@@ -229,9 +239,9 @@ public class RegistrationSystem {
         return 1;
     }
     public byte removeStudentFromCourse(int studentId, int courseId) {
-        return removeStudentFromCourse(studentId, courseId, true);
+        return removeStudentFromCourse(studentId, courseId, true, true);
     }
-    public byte removeStudentFromCourse(int studentId, int courseId, boolean print) {
+    public byte removeStudentFromCourse(int studentId, int courseId, boolean print, boolean h) {
         // remove enrollment method
 
         // returns number of type "byte" for status
@@ -241,6 +251,9 @@ public class RegistrationSystem {
         // -2 = there is no course with this id
 
         // Remember to decrease StudentNode's coursesCount and StudentNode's coursesCount
+        if (h) {
+            history.addActionToHistory("removeStudentToCourse " + studentId + " " + courseId + " " + print);
+        }
 
         StudentNode studentNode = studentsList.getStudentNodeById(studentId);
         CourseNode courseNode = coursesList.getCourseNodeById(courseId);
@@ -321,6 +334,7 @@ public class RegistrationSystem {
         }
         return arr;
     }
+
     public int[] getStudentsOfCourse(int courseId){
         // returns:
         //      if not exist the student : null

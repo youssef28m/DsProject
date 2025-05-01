@@ -10,7 +10,7 @@ public class DataStructuresProject {
     public static void main(String[] args) {
         try {
             // main method start
-            
+
             System.out.println("Hello in main method");
 
             // This is the system
@@ -25,6 +25,7 @@ public class DataStructuresProject {
             mySystem1.addCourse(54);
             mySystem1.addCourse(55);
             mySystem1.addCourse(56);
+
             mySystem1.addCourse(57);
             mySystem1.addCourse(58);
             mySystem1.removeCourse(54);
@@ -40,17 +41,11 @@ public class DataStructuresProject {
             mySystem1.displayStudentsOfCourse(333);
             mySystem1.displayStudentsOfCourse(58);
 
+            mySystem1.undo();
+            mySystem1.undo();
+            mySystem1.undo();
+            mySystem1.undo();
 
-            
-            
-            
-            
-            
-            
-            
-            
-
-            
             
             // main method End
         } catch (Exception e) {

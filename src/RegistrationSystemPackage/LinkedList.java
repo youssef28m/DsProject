@@ -113,7 +113,21 @@ class StudentsList extends LinkedList {
         }
         return null;
     }
-
+    @Override
+    int[] getAllTheList() {
+        int[] ids = new int[itemsCount];
+        StudentNode current = head;        
+        int i = 0;
+        while (current != null && i < itemsCount) {
+            ids[i++] = current.getId();
+            current = current.getNext();   
+        }
+        return ids;
+    }
+    @Override
+int getLastAddedId() {
+    return (tail != null) ? tail.getId() : -1;
+}
 }
 
 // Course list implementation
@@ -197,5 +211,19 @@ class CoursesList extends LinkedList {
         }
         return null;
     }
-
+    @Override
+    int[] getAllTheList() {
+        int[] ids = new int[itemsCount];
+        CourseNode current = head;
+        int i = 0;
+        while (current != null && i < itemsCount) {
+            ids[i++] = current.getId();
+            current = current.getNext();
+        }
+        return ids;
+    }
+    @Override
+int getLastAddedId() {
+    return (tail != null) ? tail.getId() : -1;
+}
 }
