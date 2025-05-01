@@ -225,6 +225,7 @@ class CoursesList extends LinkedList {
             ids[i++] = current.getId();
             current = current.getNext();
         }
+        sort(ids);
         return ids;
     }
     @Override
