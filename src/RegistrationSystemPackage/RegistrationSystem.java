@@ -1,5 +1,7 @@
 package RegistrationSystemPackage;
 
+import static RegistrationSystemPackage.util.sort;
+
 /**
  *
  * @author: youssef Sherif, Amr, Ahmed sobhy
@@ -332,6 +334,7 @@ public class RegistrationSystem {
             counter++;
             current = current.get_next_course();
         }
+        sort(arr);
         return arr;
     }
 
@@ -359,7 +362,7 @@ public class RegistrationSystem {
             counter++;
             current = current.get_next_student();
         }
-
+        sort(arr);
         return arr;
     }
     public void displayCoursesOfStudent(int studentId){

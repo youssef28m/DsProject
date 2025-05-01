@@ -1,5 +1,7 @@
 package RegistrationSystemPackage;
 
+import static RegistrationSystemPackage.util.sort;
+
 /**
  *
  * @author: Ahmed Hassan, Hassan, Mostafa
@@ -115,6 +117,8 @@ class StudentsList extends LinkedList {
     }
     @Override
     int[] getAllTheList() {
+        // returns it sorted
+
         int[] ids = new int[itemsCount];
         StudentNode current = head;        
         int i = 0;
@@ -122,6 +126,7 @@ class StudentsList extends LinkedList {
             ids[i++] = current.getId();
             current = current.getNext();   
         }
+        sort(ids);
         return ids;
     }
     @Override
